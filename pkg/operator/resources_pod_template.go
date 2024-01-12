@@ -39,7 +39,7 @@ func generatePodTemplate(
 	}
 	imagePath := fmt.Sprintf("%s:%s", DefaultAgentBaseImage, useVersion)
 	if d.Agent.Spec.Image != nil && *d.Agent.Spec.Image != "" {
-		imagePath = *d.Agent.Spec.Image
+		imagePath = := fmt.Sprintf("%s:%s", *d.Agent.Spec.Image, useVersion)
 	}
 
 	agentArgs := []string{
@@ -212,7 +212,7 @@ func generatePodTemplate(
 	}
 	imagePathConfigReloader := fmt.Sprintf("%s:%s", DefaultConfigReloaderBaseImage, useConfigReloaderVersion)
 	if d.Agent.Spec.ConfigReloaderImage != nil && *d.Agent.Spec.ConfigReloaderImage != "" {
-		imagePathConfigReloader = *d.Agent.Spec.ConfigReloaderImage
+		imagePathConfigReloader = := fmt.Sprintf("%s:%s", *d.Agent.Spec.ConfigReloaderImage, useConfigReloaderVersion)
 	}
 
 	boolFalse := false
@@ -282,7 +282,9 @@ func generatePodTemplate(
 		},
 		Spec: core_v1.PodSpec{
 			Containers:                    containers,
-			ImagePullSecrets:              pullSecrets,
+                        Image:                         d.Agent.Spec.image,
+                        Version:                       d.Agent.Spec.version,
+			ImagePullSecrets:              d.Agent.Spec.pullSecrets,
 			InitContainers:                d.Agent.Spec.InitContainers,
 			SecurityContext:               d.Agent.Spec.SecurityContext,
 			ServiceAccountName:            d.Agent.Spec.ServiceAccountName,
